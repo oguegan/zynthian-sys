@@ -91,10 +91,15 @@ if [ -z "$RASPI" ]; then
 		#CFLAGS="${CFLAGS} -mlittle-endian -munaligned-access -mvectorize-with-neon-quad -ftree-vectorize"
 		CFLAGS_UNSAFE="-funsafe-loop-optimizations -funsafe-math-optimizations -ffast-math"
 	elif [ "$hw_architecture" = "aarch64" ]; then
-		# RPi4
-		CFLAGS="-mcpu=cortex-a72 -mtune=cortex-a72"
-		#CFLAGS="${CFLAGS} -mlittle-endian -munaligned-access -mvectorize-with-neon-quad -ftree-vectorize"
-		CFLAGS_UNSAFE="-funsafe-loop-optimizations -funsafe-math-optimizations -ffast-math"
+		if [[ "$rbpi_version" =~ "OrangePi" ]]; then
+			echo "OrangePi detected"
+			CFLAGS="-mcpu=cortex-a53 -mfloat-abi=hard -mfpu=neon-fp-armv8 -mneon-for-64bits -mtune=cortex-a53"
+		else
+			# RPi4
+			CFLAGS="-mcpu=cortex-a72 -mtune=cortex-a72"
+			#CFLAGS="${CFLAGS} -mlittle-endian -munaligned-access -mvectorize-with-neon-quad -ftree-vectorize"
+			CFLAGS_UNSAFE="-funsafe-loop-optimizations -funsafe-math-optimizations -ffast-math"
+		fi
 	fi
 	export MACHINE_HW_NAME=$hw_architecture
 	export RBPI_VERSION=$rbpi_version

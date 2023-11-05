@@ -30,7 +30,7 @@ $ZYNTHIAN_SYS_DIR/sbin/regenerate_keys.sh 2>&1 >> /root/first_boot.log
 
 # Enable WIFI AutoAccessPoint (hostapd)
 echo -e "\nUnmasking WIFI access point service..." >> /root/first_boot.log
-systemctl unmask hostapd
+#systemctl unmask hostapd
 
 # Regenerate cache LV2
 cd $ZYNTHIAN_CONFIG_DIR/jalv
@@ -41,8 +41,8 @@ if [[ "$(ls -1q | wc -l)" -lt 20 ]]; then
 fi
 
 # Disable first_boot service
-systemctl disable first_boot
+#systemctl disable first_boot
 
 # Resize partition & reboot
 echo -e "Resizing partition..." >> /root/first_boot.log
-$ZYNTHIAN_SYS_DIR/scripts/rpi-wiggle.sh
+#$ZYNTHIAN_SYS_DIR/scripts/rpi-wiggle.sh

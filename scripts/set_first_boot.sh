@@ -14,7 +14,7 @@ apt-get clean
 
 # Delete configured wifi networks
 echo "Deleting wifi networks..."
-cp -f $ZYNTHIAN_SYS_DIR/etc/wpa_supplicant/wpa_supplicant.conf /etc/wpa_supplicant
+#cp -f $ZYNTHIAN_SYS_DIR/etc/wpa_supplicant/wpa_supplicant.conf /etc/wpa_supplicant
 
 # Delete logs
 echo "Deleting first boot logs..."
@@ -44,7 +44,7 @@ update_zynthian_sys.sh
 rm -rf $ZYNTHIAN_DIR/zyncoder/build
 $ZYNTHIAN_DIR/zyncoder/build.sh
 rm -rf $ZYNTHIAN_CONFIG_DIR/img
-#rm -rf $ZYNTHIAN_CONFIG_DIR/jalv/presets_*
+rm -rf $ZYNTHIAN_CONFIG_DIR/jalv/presets_*
 echo "nameserver 8.8.8.8" > /etc/resolv.conf
 
 # Disable Boot Log
@@ -54,7 +54,7 @@ sed -i -e 's/rootwait/rootwait logo.nologo quiet splash vt.global_cursor_default
 
 # Add First Boot Script to /etc/rc.local
 echo "Enabling first boot service..."
-systemctl enable first_boot
+#systemctl enable first_boot
 
 # Message
 echo "The system is going to halt. Extract the SD card and dump the image."

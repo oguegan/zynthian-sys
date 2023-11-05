@@ -58,12 +58,12 @@ apt-get -y update --allow-releaseinfo-change
 apt-get -y full-upgrade
 
 # Install required dependencies if needed
-apt-get -y install apt-utils apt-transport-https rpi-update sudo software-properties-common parted dirmngr rpi-eeprom gpgv wget
+apt-get -y install apt-utils apt-transport-https sudo software-properties-common parted dirmngr gpgv wget
 
 # Update Firmware
-if [ "$ZYNTHIAN_INCLUDE_RPI_UPDATE" == "yes" ]; then
-    rpi-update
-fi
+#if [ "$ZYNTHIAN_INCLUDE_RPI_UPDATE" == "yes" ]; then
+#    rpi-update
+#fi
 
 #------------------------------------------------
 # Add Repositories
@@ -99,14 +99,12 @@ apt-get -y remove --purge isc-dhcp-client triggerhappy logrotate dphys-swapfile
 apt-get -y install systemd avahi-daemon dhcpcd-dbus usbutils udisks2 udevil exfat-utils \
 xinit xserver-xorg-video-fbdev x11-xserver-utils xinput libgl1-mesa-dri tigervnc-standalone-server \
 xfwm4 xfce4-panel xdotool cpufrequtils wpasupplicant wireless-tools iw hostapd dnsmasq \
-firmware-brcm80211 firmware-atheros firmware-realtek atmel-firmware firmware-misc-nonfree \
-shiki-colors-xfwm-theme
 #firmware-ralink
 
 #TODO => Configure xfwm to use shiki-colors theme in VNC
 
 # CLI Tools
-apt-get -y install raspi-config psmisc tree joe nano vim p7zip-full i2c-tools ddcutil evtest libts-bin \
+apt-get -y install psmisc tree joe nano vim p7zip-full i2c-tools ddcutil evtest libts-bin \
 fbi scrot mpg123  mplayer xloadimage imagemagick fbcat abcmidi ffmpeg qjackctl mediainfo
 #  qmidinet
 
@@ -148,11 +146,8 @@ python3-soundfile librubberband-dev pyliblo-utils
 
 pip3 install --upgrade pip
 pip3 install tornado==4.5 tornadostreamform websocket-client jsonpickle oyaml JACK-Client sox \
-psutil pexpect requests meson ninja mido python-rtmidi==1.4.9 rpi_ws281x ffmpeg-python pyrubberband mutagen \
-abletonparsing
-
-# NOTE:
-# python-rtmidi >= 1.5 uses jack protocol 9, that is bumped in jackd 1.9.19
+psutil pexpect requests meson ninja mido python-rtmidi ffmpeg-python pyrubberband mutagen \
+abletonparsing patchage
 
 # TODO  install patchage or find a replacement
 
@@ -172,7 +167,7 @@ mkdir "$ZYNTHIAN_SW_DIR"
 cd $ZYNTHIAN_DIR
 git clone -b "${ZYNTHIAN_SYS_BRANCH}" "${ZYNTHIAN_SYS_REPO}"
 
-# Install WiringPi
+# Install WiringOp
 $ZYNTHIAN_RECIPE_DIR/install_wiringpi.sh
 #TODO Check this can't cause problems => pseudoPins.c:50:16: warning: cast to pointer from integer of different size [-Wint-to-pointer-cast]
 
@@ -199,8 +194,8 @@ cd $ZYNTHIAN_DIR
 git clone -b "${ZYNTHIAN_WEBCONF_BRANCH}" "${ZYNTHIAN_WEBCONF_REPO}"
 
 # Create needed directories
-#mkdir "$ZYNTHIAN_DATA_DIR/soundfonts"
-#mkdir "$ZYNTHIAN_DATA_DIR/soundfonts/sf2"
+mkdir "$ZYNTHIAN_DATA_DIR/soundfonts"
+mkdir "$ZYNTHIAN_DATA_DIR/soundfonts/sf2"
 mkdir "$ZYNTHIAN_DATA_DIR/soundfonts/sfz"
 mkdir "$ZYNTHIAN_DATA_DIR/soundfonts/gig"
 mkdir "$ZYNTHIAN_MY_DATA_DIR"
@@ -261,7 +256,7 @@ $ZYNTHIAN_SYS_DIR/sbin/zynthian_autoconfig.sh
 systemctl daemon-reload
 systemctl enable dhcpcd
 systemctl enable avahi-daemon
-systemctl disable raspi-config
+#systemctl disable raspi-config
 systemctl disable cron
 systemctl disable rsyslog
 systemctl disable wpa_supplicant
@@ -286,7 +281,7 @@ systemctl enable zynthian-webconf
 systemctl enable zynthian-config-on-boot
 
 # Setup loading of Zynthian Environment variables ...
-echo "source $ZYNTHIAN_SYS_DIR/scripts/zynthian_envars_extended.sh > /dev/null 2>&1" >> /root/.bashrc
+echo "source $ZYNTHIAN_SYS_DIR/scripts/zynthian_envars_extended.sh" >> /root/.bashrc
 # => Shell & Login Config
 echo "source $ZYNTHIAN_SYS_DIR/etc/profile.zynthian" >> /root/.profile
 
@@ -373,7 +368,7 @@ $ZYNTHIAN_RECIPE_DIR/install_noVNC.sh
 $ZYNTHIAN_RECIPE_DIR/install_terminado.sh
 
 # Install DT overlays for waveshare displays and others
-$ZYNTHIAN_RECIPE_DIR/install_waveshare-dtoverlays.sh
+#$ZYNTHIAN_RECIPE_DIR/install_waveshare-dtoverlays.sh
 
 #************************************************
 #------------------------------------------------
