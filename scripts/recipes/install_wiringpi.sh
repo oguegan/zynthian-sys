@@ -13,7 +13,8 @@ fi
 # Download, build and install WiringPi library
 #git clone https://github.com/WiringPi/WiringPi.git
 #git clone https://github.com/zynthian/WiringPi.git
-git clone -b next https://github.com/oguegan/wiringOP.git
+git clone https://github.com/oguegan/wiringOP.git
+git checkout next 
 cd wiringOP
 ./build
 cd..

@@ -86,7 +86,7 @@ if [ -z "$RASPI" ]; then
 			CFLAGS="-mcpu=cortex-a7 -mfloat-abi=hard -mfpu=neon-vfpv4 -mtune=cortex-a7"
 		# RPi3 (default)
 		else
-			CFLAGS="-mcpu=cortex-a53 -mfloat-abi=hard -mfpu=neon-fp-armv8 -mneon-for-64bits -mtune=cortex-a53"
+			CFLAGS="-mcpu=cortex-a53 -mtune=cortex-a53"
 		fi
 		#CFLAGS="${CFLAGS} -mlittle-endian -munaligned-access -mvectorize-with-neon-quad -ftree-vectorize"
 		CFLAGS_UNSAFE="-funsafe-loop-optimizations -funsafe-math-optimizations -ffast-math"
@@ -111,6 +111,9 @@ if [ -z "$RASPI" ]; then
 	echo "Hardware Model: ${rbpi_version}"
 
 fi
+
+export CFLAGS="-mcpu=cortex-a53 -mtune=cortex-a53"
+export CXXFLAGS=${CFLAGS}
 
 #------------------------------------------------------------------------------
 # Apt Options

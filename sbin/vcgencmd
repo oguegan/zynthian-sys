@@ -1,0 +1,24 @@
+#!/bin/bash
+
+function getboardtemp() {
+	if [ -f /etc/orangepimonitor/datasources/soctemp ]; then
+		read raw_temp </etc/orangepimonitor/datasources/soctemp 2>/dev/null
+		if [ ! -z $(echo "$raw_temp" | grep -o "^[1-9][0-9]*\.\?[0-9]*$") ] && (( $(echo "${raw_temp} < 200" |bc -l) )); then
+			# Allwinner legacy kernels output degree C
+			board_temp=${raw_temp}
+		else
+			board_temp=$(awk '{printf("%d",$1/1000)}' <<<${raw_temp})
+		fi
+	elif [ -f /etc/orangepimonitor/datasources/pmictemp ]; then
+		# fallback to PMIC temperature
+		board_temp=$(awk '{printf("%d",$1/1000)}' </etc/orangepimonitor/datasources/pmictemp)
+	fi
+	# Some boards, such as the Orange Pi Zero LTS, report shifted CPU temperatures
+	board_temp=$((board_temp + CPU_TEMP_OFFSET))
+} # getboardtemp
+
+getboardtemp
+
+if [[ $1 == 'measure_temp' ]]; then
+	echo "temp=${board_temp} °C"
+fi
